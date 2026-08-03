@@ -2,103 +2,74 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#0a0a0f">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#090a0f">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Lumina AI">
+<meta name="apple-mobile-web-app-title" content="LUMINA">
 <link rel="manifest" href="manifest.webmanifest">
-<title>Lumina AI</title>
+<title>LUMINA — Reference First Prompt Studio</title>
 <style>
 :root{
-  --bg:#090a0f; --panel:#11131a; --panel2:#171a23; --line:#292d3a;
-  --text:#f7f8ff; --muted:#9aa1b5; --accent:#7b61ff; --accent2:#3e8cff;
-  --good:#1fd18b; --warn:#ffbd3d; --danger:#ff5f72; --radius:20px;
+  --bg:#090a0f;--panel:#11131a;--panel2:#171a23;--line:#292d3a;
+  --text:#f7f8ff;--muted:#9da5ba;--accent:#7b61ff;--accent2:#3e8cff;
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif}
-body{min-height:100vh;padding-bottom:calc(88px + env(safe-area-inset-bottom))}
+body{padding-bottom:calc(88px + env(safe-area-inset-bottom))}
 button,input,textarea,select{font:inherit}
 button{cursor:pointer}
-.app{max-width:780px;margin:auto}
-header{
-  position:sticky;top:0;z-index:5;
-  padding:calc(14px + env(safe-area-inset-top)) 18px 14px;
-  background:linear-gradient(180deg,rgba(9,10,15,.98),rgba(9,10,15,.88));
-  backdrop-filter:blur(18px);border-bottom:1px solid rgba(255,255,255,.05)
-}
-.brand{display:flex;align-items:center;justify-content:space-between}
-.brand h1{font-size:24px;margin:0}.brand small{color:var(--muted)}
-.logo{display:flex;gap:10px;align-items:center}
-.spark{width:34px;height:34px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:grid;place-items:center;box-shadow:0 0 26px rgba(123,97,255,.35)}
-main{padding:18px}
+.app{max-width:920px;margin:auto}
+header{position:sticky;top:0;z-index:20;padding:calc(14px + env(safe-area-inset-top)) 16px 13px;background:linear-gradient(180deg,rgba(9,10,15,.98),rgba(9,10,15,.90));backdrop-filter:blur(18px);border-bottom:1px solid rgba(255,255,255,.05)}
+.brand{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand-left{display:flex;align-items:center;gap:11px}
+.logo{width:38px;height:38px;border-radius:13px;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent),var(--accent2))}
+.brand h1{margin:0;font-size:23px}.brand small{display:block;color:var(--muted);margin-top:2px}
+main{padding:16px}
 .view{display:none}.view.active{display:block}
-.hero{background:linear-gradient(135deg,#263a9a,#6b35e8);padding:22px;border-radius:24px;box-shadow:0 18px 50px rgba(37,55,140,.25)}
-.hero h2{margin:0 0 8px}.hero p{margin:0 0 16px;color:#e4e5ff}
-.primary,.secondary,.ghost{
-  border:none;border-radius:16px;padding:14px 16px;font-weight:700
-}
-.primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;width:100%}
-.secondary{background:var(--panel2);color:var(--text);border:1px solid var(--line)}
-.ghost{background:transparent;color:var(--text)}
-.section-title{display:flex;align-items:center;justify-content:space-between;margin:24px 2px 12px}
-.section-title h3{margin:0;font-size:18px}.section-title button{font-size:13px;color:#a99cff}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.hero{background:linear-gradient(135deg,#243c9f,#6d34e8);padding:22px;border-radius:24px;box-shadow:0 18px 55px rgba(45,51,153,.25)}
+.hero h2{margin:0 0 8px}.hero p{margin:0 0 16px;color:#e5e7ff}
+.primary,.secondary,.ghost{border:none;border-radius:15px;padding:13px 15px;font-weight:750}
+.primary{width:100%;color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent2))}
+.secondary{background:var(--panel2);color:#fff;border:1px solid var(--line)}
+.ghost{background:transparent;color:#fff}
 .card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:16px}
-.card h4{margin:8px 0 5px}.card p{margin:0;color:var(--muted);font-size:13px;line-height:1.35}
-.icon{font-size:26px}
-.field{margin-bottom:16px}
-label{display:block;font-weight:700;margin-bottom:8px}
-input,textarea,select{
-  width:100%;background:#0f1118;color:var(--text);border:1px solid var(--line);
-  border-radius:14px;padding:13px;outline:none
-}
-textarea{min-height:105px;resize:vertical;line-height:1.45}
-.segment{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.segment button,.chip{
-  border:1px solid var(--line);background:var(--panel);color:var(--text);
-  padding:11px 8px;border-radius:14px
-}
-.segment button.active,.chip.active{background:linear-gradient(135deg,#5634c9,#365fd9);border-color:transparent}
-.chips{display:flex;flex-wrap:wrap;gap:8px}
-.preview{
-  width:100%;max-height:260px;object-fit:cover;border-radius:18px;
-  background:var(--panel);border:1px solid var(--line);display:none
-}
-.prompt{
-  white-space:pre-wrap;background:#0e1016;border:1px solid var(--line);
-  border-radius:18px;padding:16px;line-height:1.5;min-height:240px
-}
-.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
-.score{display:flex;gap:14px;align-items:center}
-.score-ring{width:82px;height:82px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--accent) 0 92%,#252936 92%);position:relative}
-.score-ring:after{content:"";position:absolute;inset:8px;border-radius:50%;background:var(--panel)}
-.score-ring strong{z-index:1;font-size:24px}
-.warning{display:flex;gap:10px;padding:12px;border-radius:14px;background:#1a1710;border:1px solid #4a3a16;margin-top:10px;color:#ffe29a}
-.slider-row{margin:16px 0}
-.slider-row .top{display:flex;justify-content:space-between;margin-bottom:6px}
-input[type="range"]{padding:0}
-.project{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.project .meta{min-width:0}.project .meta strong{display:block}.project .meta small{color:var(--muted)}
-.bottom{
-  position:fixed;left:0;right:0;bottom:0;z-index:10;
-  background:rgba(12,13,19,.94);backdrop-filter:blur(18px);
-  border-top:1px solid var(--line);padding:8px 8px calc(8px + env(safe-area-inset-bottom));
-  display:grid;grid-template-columns:repeat(4,1fr)
-}
-.bottom button{background:none;border:none;color:var(--muted);padding:6px 2px;font-size:12px}
-.bottom button.active{color:#a68cff}.bottom span{display:block;font-size:22px;margin-bottom:2px}
+.section-title{display:flex;align-items:center;justify-content:space-between;margin:22px 2px 11px}
+.section-title h3{margin:0;font-size:18px}
+label{display:block;font-weight:750;margin:0 0 8px}
+.field{margin-bottom:15px}
+input,textarea,select{width:100%;background:#0f1118;color:#fff;border:1px solid var(--line);border-radius:14px;padding:13px;outline:none}
+textarea{min-height:104px;resize:vertical;line-height:1.45}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .note{color:var(--muted);font-size:13px;line-height:1.45}
-.toast{position:fixed;left:50%;bottom:110px;transform:translateX(-50%);background:#202331;color:#fff;padding:11px 16px;border-radius:999px;opacity:0;pointer-events:none;transition:.2s;z-index:99}
+.preview{width:100%;display:none;max-height:320px;object-fit:cover;border-radius:18px;background:#0f1118;border:1px solid var(--line);margin-top:10px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid var(--line);background:#141824;color:#fff;padding:10px 12px;border-radius:14px}
+.chip.active{background:linear-gradient(135deg,#5634c9,#365fd9);border-color:transparent}
+.prompt{white-space:pre-wrap;background:#0e1016;border:1px solid var(--line);border-radius:18px;padding:16px;line-height:1.55;min-height:320px}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.validation{background:#0f1118;border:1px solid var(--line);border-radius:16px;padding:14px;margin:14px 0}
+.validation-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.score{display:grid;place-items:center;min-width:44px;height:30px;padding:0 10px;border-radius:999px;background:#1d2340;color:#cfc8ff;font-weight:800}
+.warning,.good{padding:11px 12px;border-radius:13px;margin-top:8px;line-height:1.42}
+.warning{background:#1a1710;border:1px solid #4a3a16;color:#ffe29a}
+.good{background:#0f1f17;border:1px solid #245a40;color:#c4ffdc}
+.bottom{position:fixed;left:0;right:0;bottom:0;z-index:30;display:grid;grid-template-columns:repeat(4,1fr);background:rgba(12,13,19,.94);backdrop-filter:blur(18px);border-top:1px solid var(--line);padding:8px 6px calc(8px + env(safe-area-inset-bottom))}
+.bottom button{background:none;border:none;color:var(--muted);padding:5px 1px;font-size:11px}
+.bottom button.active{color:#aa93ff}.bottom span{display:block;font-size:21px;margin-bottom:2px}
+.toast{position:fixed;left:50%;bottom:105px;transform:translateX(-50%);background:#202331;color:#fff;padding:11px 16px;border-radius:999px;opacity:0;pointer-events:none;transition:.2s;z-index:99}
 .toast.show{opacity:1}
-@media(min-width:700px){.grid{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:700px){.row,.actions{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <div class="app">
 <header>
   <div class="brand">
-    <div class="logo"><div class="spark">✦</div><div><h1>Lumina AI</h1><small>Realistic photo prompt studio</small></div></div>
+    <div class="brand-left">
+      <div class="logo">✦</div>
+      <div><h1>LUMINA</h1><small>Reference First Prompt Studio</small></div>
+    </div>
     <button class="ghost" id="installHelp">•••</button>
   </div>
 </header>
@@ -106,104 +77,80 @@ input[type="range"]{padding:0}
 <main>
 <section id="home" class="view active">
   <div class="hero">
-    <h2>Create a stronger edit prompt</h2>
-    <p>Import a photo, describe the change, lock what must stay identical, and let Lumina compile the final prompt.</p>
-    <button class="primary" onclick="newProject()">＋ New Project</button>
+    <h2>Generate a prompt from one uploaded picture</h2>
+    <p>The output always starts with a reference-image instruction and builds a strong descriptive prompt around the uploaded picture.</p>
+    <button class="primary" onclick="newProject()">Start</button>
   </div>
-
-  <div class="section-title"><h3>Templates</h3></div>
-  <div class="grid">
-    <button class="card" onclick="useTemplate('restore')"><div class="icon">🛠️</div><h4>Restore Photo</h4><p>Repair blur, noise, damage and lost detail.</p></button>
-    <button class="card" onclick="useTemplate('portrait')"><div class="icon">👤</div><h4>Enhance Portrait</h4><p>Improve clarity while preserving identity.</p></button>
-    <button class="card" onclick="useTemplate('remove')"><div class="icon">🧹</div><h4>Remove Objects</h4><p>Clean distractions without changing the scene.</p></button>
-    <button class="card" onclick="useTemplate('background')"><div class="icon">🌄</div><h4>Change Background</h4><p>Replace the setting with coherent light and depth.</p></button>
-  </div>
-
-  <div class="section-title"><h3>Recent Projects</h3><button class="ghost" onclick="showView('projects')">See all</button></div>
-  <div id="recentProjects"></div>
 </section>
 
 <section id="studio" class="view">
-  <div class="field">
-    <label>Reference photo</label>
-    <input id="photoInput" type="file" accept="image/*">
-    <img id="photoPreview" class="preview" alt="Selected photo">
-  </div>
-
-  <div class="field">
-    <label>Subject</label>
-    <input id="subject" placeholder="Example: woman standing outdoors">
-  </div>
-
-  <div class="field">
-    <label>Goal</label>
-    <div class="segment" id="goalSegment">
-      <button data-goal="Restore" class="active">Restore</button>
-      <button data-goal="Enhance">Enhance</button>
-      <button data-goal="Edit">Edit</button>
-    </div>
-  </div>
-
-  <div class="field">
-    <label>Requested changes</label>
-    <textarea id="changes" placeholder="Describe exactly what should change..."></textarea>
-  </div>
-
-  <div class="field">
-    <label>Preserve exactly</label>
-    <div class="chips" id="preserveChips"></div>
-  </div>
-
-  <div class="field">
-    <label>Lighting</label>
-    <select id="lighting">
-      <option>Preserve the original lighting</option>
-      <option>Soft north-facing window light</option>
-      <option>Natural overcast daylight</option>
-      <option>Golden-hour directional sunlight</option>
-      <option>Clean editorial studio lighting</option>
-      <option>Low-light cinematic practical illumination</option>
-    </select>
-  </div>
-
-  <div class="field">
-    <label>Camera behavior</label>
-    <select id="camera">
-      <option>Preserve the original camera perspective and focal-length appearance</option>
-      <option>Modern full-frame editorial photography</option>
-      <option>Medium-format portrait rendering</option>
-      <option>Documentary photojournalist capture</option>
-      <option>Macro optical precision</option>
-      <option>Commercial product photography</option>
-    </select>
-  </div>
-
-  <div class="slider-row"><div class="top"><label>Detail recovery</label><span id="detailValue">80</span></div><input id="detail" type="range" min="0" max="100" value="80"></div>
-  <div class="slider-row"><div class="top"><label>Noise reduction</label><span id="noiseValue">65</span></div><input id="noise" type="range" min="0" max="100" value="65"></div>
-  <div class="slider-row"><div class="top"><label>Sharpness</label><span id="sharpValue">55</span></div><input id="sharp" type="range" min="0" max="100" value="55"></div>
-
-  <button class="primary" onclick="buildPrompt()">✦ Build Prompt</button>
-</section>
-
-<section id="coach" class="view">
   <div class="card">
-    <div class="score">
-      <div class="score-ring"><strong id="scoreNumber">92</strong></div>
-      <div><h3 style="margin:0">Prompt Score</h3><p class="note" id="scoreText">Strong preservation and restoration coverage.</p></div>
+    <div class="field">
+      <label>Upload reference picture</label>
+      <input id="referenceInput" type="file" accept="image/*">
+      <img id="referencePreview" class="preview" alt="Reference preview">
+      <div class="note">The prompt will always begin by using the uploaded reference picture first.</div>
     </div>
+
+    <div class="row">
+      <div class="field">
+        <label>Project name</label>
+        <input id="projectName" placeholder="Example: reference portrait prompt">
+      </div>
+      <div class="field">
+        <label>Prompt mode</label>
+        <select id="mode">
+          <option>Describe and preserve the uploaded picture</option>
+          <option>Enhance the uploaded picture</option>
+          <option>Edit the uploaded picture while preserving identity</option>
+          <option>Create a new image based on the uploaded picture</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Optional requested change</label>
+      <textarea id="editRequest" placeholder="Example: improve quality, change background, cinematic lighting, or leave blank to create a pure reference-based prompt."></textarea>
+    </div>
+
+    <div class="field">
+      <label>Preserve exactly</label>
+      <div id="preserveChips" class="chips"></div>
+    </div>
+
+    <div class="field">
+      <label>Quality focus</label>
+      <div id="qualityChips" class="chips"></div>
+    </div>
+
+    <div class="field">
+      <label>Optional extra scene notes</label>
+      <textarea id="sceneNotes" placeholder="Optional: mention anything else you want emphasized after the app starts from the reference picture."></textarea>
+    </div>
+
+    <div class="section-title"><h3>Auto Prompt Preview</h3></div>
+    <div id="planPreview" class="prompt"></div>
+
+    <div class="validation">
+      <div class="validation-head">
+        <strong>Validation</strong>
+        <span id="validationScore" class="score">0</span>
+      </div>
+      <div id="validationMessages"></div>
+    </div>
+
+    <button class="primary" onclick="compilePrompt()">Generate Prompt</button>
   </div>
-  <div id="coachWarnings"></div>
-  <button class="primary" style="margin-top:16px" onclick="improvePrompt()">✦ Improve Prompt</button>
 </section>
 
 <section id="output" class="view">
   <div class="section-title"><h3>Compiled Prompt</h3></div>
-  <div id="promptOutput" class="prompt">Build a prompt in Prompt Studio first.</div>
+  <div id="compiledPrompt" class="prompt">Generate a prompt in Studio.</div>
   <div class="actions">
     <button class="secondary" onclick="copyPrompt()">Copy</button>
     <button class="secondary" onclick="sharePrompt()">Share</button>
+    <button class="secondary" onclick="exportPrompt()">Export Text</button>
     <button class="secondary" onclick="saveProject()">Save Project</button>
-    <button class="secondary" onclick="downloadPrompt()">Export Text</button>
   </div>
 </section>
 
@@ -217,183 +164,221 @@ input[type="range"]{padding:0}
 <nav class="bottom">
   <button data-view="home" class="active"><span>⌂</span>Home</button>
   <button data-view="studio"><span>✎</span>Studio</button>
-  <button data-view="coach"><span>◉</span>Coach</button>
-  <button data-view="output"><span>□</span>Output</button>
+  <button data-view="output"><span>▤</span>Output</button>
+  <button data-view="projects"><span>☰</span>Projects</button>
 </nav>
 
 <div id="toast" class="toast"></div>
 
 <script>
-const preserveOptions=["Identity","Face","Expression","Pose","Body proportions","Hair","Clothing","Composition","Crop","Camera angle","Perspective","Background","Lighting direction"];
+const preserveDefaults=["Identity","Face","Expression","Pose","Hair","Clothing","Camera angle","Composition","Background","Lighting"];
+const qualityDefaults=["High realism","Fine detail","Natural texture","Tonal separation","Professional clarity"];
 let state={
-  goal:"Restore",
-  preserve:new Set(["Identity","Face","Expression","Pose","Composition","Camera angle","Perspective"]),
-  prompt:"",
-  photoData:null
+  referenceLoaded:false,
+  preserve:new Set(preserveDefaults),
+  quality:new Set(qualityDefaults),
+  compiledPrompt:""
 };
 
+function $(id){return document.getElementById(id);}
+
 function init(){
-  const chips=document.getElementById("preserveChips");
-  preserveOptions.forEach(x=>{
-    const b=document.createElement("button");
-    b.className="chip"+(state.preserve.has(x)?" active":"");
-    b.textContent=x;
-    b.onclick=()=>{state.preserve.has(x)?state.preserve.delete(x):state.preserve.add(x);b.classList.toggle("active")};
-    chips.appendChild(b);
-  });
-
-  document.querySelectorAll(".bottom button").forEach(b=>b.onclick=()=>showView(b.dataset.view));
-  document.querySelectorAll("#goalSegment button").forEach(b=>b.onclick=()=>{
-    state.goal=b.dataset.goal;
-    document.querySelectorAll("#goalSegment button").forEach(x=>x.classList.remove("active"));
-    b.classList.add("active");
-  });
-
-  ["detail","noise","sharp"].forEach(id=>{
-    const el=document.getElementById(id);
-    const out=document.getElementById(id==="detail"?"detailValue":id==="noise"?"noiseValue":"sharpValue");
-    el.oninput=()=>out.textContent=el.value;
-  });
-
-  document.getElementById("photoInput").addEventListener("change", e=>{
-    const file=e.target.files[0];
-    if(!file)return;
-    const reader=new FileReader();
-    reader.onload=()=>{state.photoData=reader.result;const img=document.getElementById("photoPreview");img.src=reader.result;img.style.display="block"};
-    reader.readAsDataURL(file);
-  });
-
-  document.getElementById("installHelp").onclick=()=>alert("Install on iPhone: tap Safari's Share button, choose Add to Home Screen, then tap Add.");
+  renderChips("preserveChips", preserveDefaults, state.preserve);
+  renderChips("qualityChips", qualityDefaults, state.quality);
+  bindNav();
+  bindInput();
   renderProjects();
+  updatePlan();
+  if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js");}
+  $("installHelp").onclick=()=>alert("On iPhone: open this site in Safari, tap Share, then Add to Home Screen.");
 }
-function showView(id){
-  document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
-  document.querySelectorAll(".bottom button").forEach(b=>b.classList.toggle("active",b.dataset.view===id));
-  window.scrollTo({top:0,behavior:"smooth"});
+
+function renderChips(containerId, values, setRef){
+  const box=$(containerId);
+  values.forEach(value=>{
+    const b=document.createElement("button");
+    b.className="chip active";
+    b.textContent=value;
+    b.dataset.value=value;
+    b.onclick=()=>{
+      setRef.has(value)?setRef.delete(value):setRef.add(value);
+      b.classList.toggle("active");
+      updatePlan();
+    };
+    box.appendChild(b);
+  });
 }
-function newProject(){
-  document.getElementById("subject").value="";
-  document.getElementById("changes").value="";
-  state.prompt="";
-  showView("studio");
+
+function bindNav(){
+  document.querySelectorAll(".bottom button").forEach(b=>b.onclick=()=>showView(b.dataset.view));
 }
-function useTemplate(type){
-  const map={
-    restore:["Restore","Restore and enhance the uploaded photograph. Remove blur, noise, compression damage and surface defects while recovering believable fine detail."],
-    portrait:["Enhance","Improve portrait clarity, skin texture, hair detail, tonal separation and natural color while preserving the person exactly."],
-    remove:["Edit","Remove the specified unwanted object and reconstruct the hidden background with consistent geometry, texture, lighting and perspective."],
-    background:["Edit","Replace only the background with the requested environment while preserving the subject, edges, pose, perspective and original photographic realism."]
-  };
-  const [goal,text]=map[type];
-  state.goal=goal; document.getElementById("changes").value=text;
-  document.querySelectorAll("#goalSegment button").forEach(b=>b.classList.toggle("active",b.dataset.goal===goal));
-  showView("studio");
+
+function bindInput(){
+  ["projectName","mode","editRequest","sceneNotes"].forEach(id=>$(id).addEventListener("input",updatePlan));
+  $("referenceInput").addEventListener("change",e=>{
+    const f=e.target.files[0];
+    if(!f)return;
+    const r=new FileReader();
+    r.onload=()=>{
+      state.referenceLoaded=true;
+      $("referencePreview").src=r.result;
+      $("referencePreview").style.display="block";
+      updatePlan();
+      toast("Reference picture loaded");
+    };
+    r.readAsDataURL(f);
+  });
 }
+
 function buildPrompt(){
-  const subject=document.getElementById("subject").value.trim()||"the principal subject in the uploaded image";
-  const changes=document.getElementById("changes").value.trim()||"Improve photographic clarity, tonal separation and realistic fine detail without changing the content.";
-  const lighting=document.getElementById("lighting").value;
-  const camera=document.getElementById("camera").value;
-  const detail=document.getElementById("detail").value;
-  const noise=document.getElementById("noise").value;
-  const sharp=document.getElementById("sharp").value;
+  const mode=$("mode").value;
+  const editRequest=$("editRequest").value.trim();
+  const sceneNotes=$("sceneNotes").value.trim();
   const preserve=[...state.preserve].join(", ");
+  const quality=[...state.quality].join(", ");
 
-  state.prompt=`Use the uploaded image as the absolute visual source and editing anchor.
+  return `Use the uploaded reference picture as the primary visual reference and starting point for the prompt.
 
-PRIMARY OBJECTIVE
-${state.goal} ${subject}. Perform only the requested changes: ${changes}
+REFERENCE-BASED DESCRIPTION
+The uploaded picture is the full visual source for this prompt. Build the prompt around the exact subject, appearance, pose, expression, clothing, camera angle, composition, lighting, environment, and visual relationships contained in the uploaded reference picture.
 
-ABSOLUTE PRESERVATION LOCK
-Preserve exactly: ${preserve}. Maintain the original spatial relationships, subject placement, scene geometry, edge boundaries and photographic continuity. Do not reinterpret, replace, beautify or redesign preserved elements.
+PROMPT MODE
+${mode}
 
-PHOTOGRAPHIC ANALYSIS AND CONTINUITY
-Respect the existing focal-length appearance, subject distance, depth relationships, occlusion, contact shadows, reflections, highlight direction and environmental light bounce. ${camera}. ${lighting}.
+PRESERVE EXACTLY
+${preserve}.
 
-REALITY-GRADE DETAIL RECOVERY
-Apply detail recovery at ${detail}% intensity, noise reduction at ${noise}% intensity and natural sharpness at ${sharp}% intensity. Recover fine edge definition, realistic hair strands, eyelashes, eyebrows, skin pores, fabric weave, stitching, foliage, architecture and material microtexture only where supported by the source. Preserve authentic asymmetry and natural imperfections. Do not invent unsupported facial features, anatomy, accessories, text or background objects.
+QUALITY TARGET
+${quality}. Maintain realistic materials, believable anatomy, clean detail, natural skin and hair texture, accurate tonal transitions, and coherent photographic continuity.
 
-MATERIAL AND LIGHT BEHAVIOR
-Skin must retain natural translucency, capillary variation, fine vellus hair and non-plastic texture. Hair must resolve into varied strands without painted clumps. Fabric must show coherent weave, folds and stitching. Glass, metal, water, wood, foliage, stone and painted surfaces must retain physically plausible reflectance, roughness, refraction and weathering. Keep all reflections, shadows and highlights consistent with the same scene illumination.
+REFERENCE-FIRST INSTRUCTION
+Start from the uploaded reference picture. Describe the uploaded picture first as the source image, then apply only the requested generation or editing goal while keeping the output faithful to the reference picture.
 
-TONAL AND COLOR RESTORATION
-Improve local contrast, dynamic range and tonal separation without artificial HDR. Recover gradual highlight falloff and readable shadow detail without flattening the image. Preserve realistic white balance, neutral color relationships and natural skin tones. Avoid oversaturation, crushed blacks, clipped highlights and color contamination.
+REQUESTED CHANGE OR GOAL
+${editRequest || "Create a high-quality prompt that remains faithful to the uploaded reference picture without changing its core visual identity."}
 
-ARTIFACT CONTROL
-Remove blur, compression blocks, JPEG ringing, chroma noise, banding, pixelation and unwanted haze while retaining genuine photographic grain. Sharpen naturally without halos, edge ringing, brittle texture or synthetic micro-detail.
+EXTRA SCENE NOTES
+${sceneNotes || "No extra scene notes provided. Stay visually faithful to the uploaded picture."}
 
-FINAL OUTPUT STANDARD
-The result must look like an authentic high-resolution photograph captured in one coherent exposure—not an illustration, CGI render, composite or AI-generated reinterpretation. Preserve identity and composition with maximum fidelity while making the requested edit visually seamless and physically believable.`;
+FINAL PROMPT
+Use the uploaded reference picture as the absolute visual anchor. Generate an output that is based on the uploaded picture first, preserves the most important visual traits from the reference, and applies only the requested changes with strong realism and professional image quality.`;
+}
 
-  document.getElementById("promptOutput").textContent=state.prompt;
-  updateCoach();
+function validate(){
+  const warnings=[], errors=[];
+  if(!state.referenceLoaded) errors.push("Upload a reference picture.");
+  const score=Math.max(0,100 - errors.length*40 - warnings.length*8);
+  return {errors,warnings,score,valid:errors.length===0};
+}
+
+function updatePlan(){
+  $("planPreview").textContent=buildPrompt();
+  const v=validate();
+  $("validationScore").textContent=v.score;
+  const parts=[];
+  v.errors.forEach(x=>parts.push(`<div class="warning">⛔ ${escapeHtml(x)}</div>`));
+  v.warnings.forEach(x=>parts.push(`<div class="warning">⚠️ ${escapeHtml(x)}</div>`));
+  if(!parts.length) parts.push('<div class="good">✓ Ready to generate the reference-first prompt.</div>');
+  $("validationMessages").innerHTML=parts.join("");
+}
+
+function compilePrompt(){
+  const v=validate();
+  if(!v.valid){toast("Fix validation errors first");return;}
+  state.compiledPrompt=buildPrompt();
+  $("compiledPrompt").textContent=state.compiledPrompt;
   showView("output");
+  toast("Prompt generated");
 }
-function updateCoach(){
-  const warnings=[];
-  const subject=document.getElementById("subject").value.trim();
-  const changes=document.getElementById("changes").value.trim();
-  if(!subject)warnings.push("Add a specific subject for a more targeted prompt.");
-  if(!changes)warnings.push("Describe exactly what should change.");
-  if(state.goal==="Edit" && state.preserve.has("Background") && /background/i.test(changes))warnings.push("Background is locked but the requested edit mentions changing it.");
-  if(!state.preserve.has("Identity"))warnings.push("Identity lock is off; enable it for edits involving a real person.");
-  const score=Math.max(60,100-warnings.length*9);
-  document.getElementById("scoreNumber").textContent=score;
-  document.getElementById("scoreText").textContent=warnings.length?"Review the suggestions below before exporting.":"Excellent structure, preservation and photographic consistency.";
-  const box=document.getElementById("coachWarnings");
-  box.innerHTML=warnings.length?warnings.map(w=>`<div class="warning">⚠️ <span>${w}</span></div>`).join(""):`<div class="card" style="margin-top:12px"><strong style="color:var(--good)">✓ No major conflicts detected</strong><p class="note">The prompt clearly separates requested changes from preserved content.</p></div>`;
-}
-function improvePrompt(){
-  if(!document.getElementById("changes").value.trim())document.getElementById("changes").value="Improve clarity, recover realistic fine detail, correct tonal balance and remove visible image artifacts while preserving the original scene.";
-  state.preserve.add("Identity");state.preserve.add("Composition");state.preserve.add("Perspective");
-  document.querySelectorAll(".chip").forEach(b=>b.classList.toggle("active",state.preserve.has(b.textContent)));
-  buildPrompt();
-}
+
 async function copyPrompt(){
-  if(!state.prompt)return toast("Build a prompt first");
-  await navigator.clipboard.writeText(state.prompt);toast("Prompt copied");
+  if(!state.compiledPrompt){toast("Generate a prompt first");return;}
+  await navigator.clipboard.writeText(state.compiledPrompt);
+  toast("Prompt copied");
 }
+
 async function sharePrompt(){
-  if(!state.prompt)return toast("Build a prompt first");
-  if(navigator.share)await navigator.share({title:"Lumina AI Prompt",text:state.prompt});
-  else copyPrompt();
+  if(!state.compiledPrompt){toast("Generate a prompt first");return;}
+  if(navigator.share){await navigator.share({title:"LUMINA Prompt",text:state.compiledPrompt});}
+  else{copyPrompt();}
 }
+
+function exportPrompt(){
+  if(!state.compiledPrompt){toast("Generate a prompt first");return;}
+  const blob=new Blob([state.compiledPrompt],{type:"text/plain"});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  a.download="LUMINA-Reference-First-Prompt.txt";
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
 function saveProject(){
-  if(!state.prompt)return toast("Build a prompt first");
-  const projects=JSON.parse(localStorage.getItem("lumina-projects")||"[]");
+  if(!state.compiledPrompt){compilePrompt();}
+  if(!state.compiledPrompt)return;
+  const key="lumina-reference-first-projects";
+  const projects=JSON.parse(localStorage.getItem(key)||"[]");
   projects.unshift({
     id:Date.now(),
-    name:document.getElementById("subject").value.trim()||`${state.goal} Project`,
-    goal:state.goal,prompt:state.prompt,date:new Date().toLocaleString()
+    name:$("projectName").value.trim()||"Untitled Reference Prompt",
+    prompt:state.compiledPrompt,
+    date:new Date().toLocaleString()
   });
-  localStorage.setItem("lumina-projects",JSON.stringify(projects.slice(0,50)));
-  renderProjects();toast("Project saved");
+  localStorage.setItem(key, JSON.stringify(projects.slice(0,50)));
+  renderProjects();
+  toast("Project saved");
 }
+
 function renderProjects(){
-  const projects=JSON.parse(localStorage.getItem("lumina-projects")||"[]");
-  const html=projects.length?projects.map(p=>`<div class="card project" style="margin-bottom:10px"><div class="meta"><strong>${escapeHtml(p.name)}</strong><small>${escapeHtml(p.goal)} • ${escapeHtml(p.date)}</small></div><div><button class="secondary" onclick="openProject(${p.id})">Open</button> <button class="ghost" onclick="deleteProject(${p.id})">Delete</button></div></div>`).join(""):`<div class="card"><p class="note">No saved projects yet.</p></div>`;
-  document.getElementById("projectList").innerHTML=html;
-  document.getElementById("recentProjects").innerHTML=projects.slice(0,3).length?projects.slice(0,3).map(p=>`<button class="card" style="width:100%;text-align:left;margin-bottom:10px" onclick="openProject(${p.id})"><strong>${escapeHtml(p.name)}</strong><p>${escapeHtml(p.goal)} • ${escapeHtml(p.date)}</p></button>`).join(""):`<div class="card"><p class="note">Your saved work will appear here.</p></div>`;
+  const key="lumina-reference-first-projects";
+  const projects=JSON.parse(localStorage.getItem(key)||"[]");
+  $("projectList").innerHTML=projects.length ? projects.map(p=>`<div class="card" style="margin-bottom:10px"><strong>${escapeHtml(p.name)}</strong><div class="note">${escapeHtml(p.date)}</div><div class="actions"><button class="secondary" onclick="openProject(${p.id})">Open</button><button class="secondary" onclick="deleteProject(${p.id})">Delete</button></div></div>`).join("") : '<div class="card"><div class="note">No saved projects yet.</div></div>';
 }
+
 function openProject(id){
-  const p=JSON.parse(localStorage.getItem("lumina-projects")||"[]").find(x=>x.id===id);
-  if(!p)return;state.prompt=p.prompt;document.getElementById("promptOutput").textContent=p.prompt;showView("output");
+  const key="lumina-reference-first-projects";
+  const p=JSON.parse(localStorage.getItem(key)||"[]").find(x=>x.id===id);
+  if(!p)return;
+  state.compiledPrompt=p.prompt;
+  $("compiledPrompt").textContent=p.prompt;
+  showView("output");
 }
+
 function deleteProject(id){
-  const projects=JSON.parse(localStorage.getItem("lumina-projects")||"[]").filter(x=>x.id!==id);
-  localStorage.setItem("lumina-projects",JSON.stringify(projects));renderProjects();toast("Project deleted");
+  const key="lumina-reference-first-projects";
+  const projects=JSON.parse(localStorage.getItem(key)||"[]").filter(x=>x.id!==id);
+  localStorage.setItem(key, JSON.stringify(projects));
+  renderProjects();
+  toast("Project deleted");
 }
-function downloadPrompt(){
-  if(!state.prompt)return toast("Build a prompt first");
-  const blob=new Blob([state.prompt],{type:"text/plain"});
-  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="Lumina-Prompt.txt";a.click();URL.revokeObjectURL(a.href);
+
+function newProject(){
+  ["projectName","editRequest","sceneNotes"].forEach(id=>$(id).value="");
+  $("mode").selectedIndex=0;
+  state.compiledPrompt="";
+  $("compiledPrompt").textContent="Generate a prompt in Studio.";
+  updatePlan();
+  showView("studio");
 }
+
+function showView(id){
+  document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));
+  $(id).classList.add("active");
+  document.querySelectorAll(".bottom button").forEach(b=>b.classList.toggle("active", b.dataset.view===id));
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
 function toast(msg){
-  const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),1800)
+  const t=$("toast");
+  t.textContent=msg;
+  t.classList.add("show");
+  setTimeout(()=>t.classList.remove("show"),1800);
 }
-function escapeHtml(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
-if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js");
+
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
+}
+
 init();
 </script>
 </body>
