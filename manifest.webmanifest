@@ -1,11 +1,11 @@
 {
-  "name": "Lumina AI",
-  "short_name": "Lumina",
+  "name": "LUMINA \u2014 Scene Transfer Prompt Studio",
+  "short_name": "LUMINA",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#090a0f",
   "theme_color": "#090a0f",
-  "description": "An iPhone-first realistic photo editing prompt studio.",
+  "description": "Build scene-transfer edit prompts using one image for the scene and another for target identity.",
   "icons": [
     {
       "src": "icon.svg",
