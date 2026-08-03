@@ -1,11 +1,11 @@
 {
-  "name": "Lumina AI",
-  "short_name": "Lumina",
+  "name": "LUMINA \u2014 Identity Lock Prompt Studio",
+  "short_name": "LUMINA",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#090a0f",
   "theme_color": "#090a0f",
-  "description": "An iPhone-first realistic photo editing prompt studio.",
+  "description": "One-reference identity-lock prompt generator for high-quality AI image edits and generations.",
   "icons": [
     {
       "src": "icon.svg",
