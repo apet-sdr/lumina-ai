@@ -1,11 +1,11 @@
 {
-  "name": "Lumina AI",
-  "short_name": "Lumina",
+  "name": "LUMINA Vision Prompt Studio v2",
+  "short_name": "LUMINA Vision",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#090a0f",
   "theme_color": "#090a0f",
-  "description": "An iPhone-first realistic photo editing prompt studio.",
+  "description": "Analyze an uploaded picture with a vision backend and generate a reference-first prompt. Saves your endpoint.",
   "icons": [
     {
       "src": "icon.svg",
