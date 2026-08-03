@@ -1,11 +1,11 @@
 {
-  "name": "Lumina AI",
-  "short_name": "Lumina",
+  "name": "LUMINA \u2014 AI Visual Intelligence Platform",
+  "short_name": "LUMINA",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#090a0f",
   "theme_color": "#090a0f",
-  "description": "An iPhone-first realistic photo editing prompt studio.",
+  "description": "A modular, model-agnostic visual intelligence platform for realistic AI image prompting.",
   "icons": [
     {
       "src": "icon.svg",

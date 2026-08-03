@@ -1,400 +1,789 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#0a0a0f">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Lumina AI">
-<link rel="manifest" href="manifest.webmanifest">
-<title>Lumina AI</title>
-<style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#090a0f">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="LUMINA">
+  <link rel="manifest" href="manifest.webmanifest">
+  <style>
+
 :root{
-  --bg:#090a0f; --panel:#11131a; --panel2:#171a23; --line:#292d3a;
-  --text:#f7f8ff; --muted:#9aa1b5; --accent:#7b61ff; --accent2:#3e8cff;
-  --good:#1fd18b; --warn:#ffbd3d; --danger:#ff5f72; --radius:20px;
+  --bg:#090a0f;--panel:#11131a;--panel2:#171a23;--line:#292d3a;
+  --text:#f7f8ff;--muted:#9da5ba;--accent:#7b61ff;--accent2:#3e8cff;
+  --green:#27d697;--amber:#ffc34d;--danger:#ff6678;
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif}
-body{min-height:100vh;padding-bottom:calc(88px + env(safe-area-inset-bottom))}
+body{padding-bottom:calc(88px + env(safe-area-inset-bottom))}
 button,input,textarea,select{font:inherit}
 button{cursor:pointer}
-.app{max-width:780px;margin:auto}
-header{
-  position:sticky;top:0;z-index:5;
-  padding:calc(14px + env(safe-area-inset-top)) 18px 14px;
-  background:linear-gradient(180deg,rgba(9,10,15,.98),rgba(9,10,15,.88));
+.app{max-width:980px;margin:auto}
+.topbar{
+  position:sticky;top:0;z-index:20;
+  padding:calc(14px + env(safe-area-inset-top)) 16px 13px;
+  background:linear-gradient(180deg,rgba(9,10,15,.98),rgba(9,10,15,.90));
   backdrop-filter:blur(18px);border-bottom:1px solid rgba(255,255,255,.05)
 }
-.brand{display:flex;align-items:center;justify-content:space-between}
-.brand h1{font-size:24px;margin:0}.brand small{color:var(--muted)}
-.logo{display:flex;gap:10px;align-items:center}
-.spark{width:34px;height:34px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:grid;place-items:center;box-shadow:0 0 26px rgba(123,97,255,.35)}
-main{padding:18px}
+.brand{display:flex;align-items:center;gap:11px}
+.logo{width:38px;height:38px;border-radius:13px;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent),var(--accent2))}
+.brand h1{margin:0;font-size:23px}.brand small{display:block;color:var(--muted);margin-top:2px}
+.topbar{display:flex;justify-content:space-between;align-items:center}
+main{padding:16px}
 .view{display:none}.view.active{display:block}
-.hero{background:linear-gradient(135deg,#263a9a,#6b35e8);padding:22px;border-radius:24px;box-shadow:0 18px 50px rgba(37,55,140,.25)}
-.hero h2{margin:0 0 8px}.hero p{margin:0 0 16px;color:#e4e5ff}
-.primary,.secondary,.ghost{
-  border:none;border-radius:16px;padding:14px 16px;font-weight:700
+.hero{background:linear-gradient(135deg,#243c9f,#6d34e8);padding:22px;border-radius:24px;box-shadow:0 18px 55px rgba(45,51,153,.25)}
+.hero h2{margin:0 0 8px}.hero p{margin:0 0 16px;color:#e5e7ff}
+.primary,.secondary,.icon-button,.text-button,.danger{
+  border:none;border-radius:15px;padding:13px 15px;font-weight:750
 }
-.primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;width:100%}
+.primary{width:100%;color:white;background:linear-gradient(135deg,var(--accent),var(--accent2))}
 .secondary{background:var(--panel2);color:var(--text);border:1px solid var(--line)}
-.ghost{background:transparent;color:var(--text)}
-.section-title{display:flex;align-items:center;justify-content:space-between;margin:24px 2px 12px}
-.section-title h3{margin:0;font-size:18px}.section-title button{font-size:13px;color:#a99cff}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.icon-button,.text-button{background:transparent;color:var(--text)}
+.danger{background:#2a1116;color:#ff9bab;border:1px solid #5c232e}
 .card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:16px}
-.card h4{margin:8px 0 5px}.card p{margin:0;color:var(--muted);font-size:13px;line-height:1.35}
-.icon{font-size:26px}
-.field{margin-bottom:16px}
-label{display:block;font-weight:700;margin-bottom:8px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.section-title{display:flex;align-items:center;justify-content:space-between;margin:22px 2px 11px}
+.section-title h3{margin:0;font-size:18px}
+.note{color:var(--muted);font-size:13px;line-height:1.45}
+label{display:block;font-weight:750;margin:0 0 8px}
+.field{margin-bottom:15px}
 input,textarea,select{
   width:100%;background:#0f1118;color:var(--text);border:1px solid var(--line);
   border-radius:14px;padding:13px;outline:none
 }
-textarea{min-height:105px;resize:vertical;line-height:1.45}
-.segment{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.segment button,.chip{
-  border:1px solid var(--line);background:var(--panel);color:var(--text);
-  padding:11px 8px;border-radius:14px
-}
-.segment button.active,.chip.active{background:linear-gradient(135deg,#5634c9,#365fd9);border-color:transparent}
+textarea{min-height:104px;resize:vertical;line-height:1.45}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.row3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
-.preview{
-  width:100%;max-height:260px;object-fit:cover;border-radius:18px;
-  background:var(--panel);border:1px solid var(--line);display:none
-}
+.chip{border:1px solid var(--line);background:#141824;color:var(--text);padding:10px 12px;border-radius:14px}
+.chip.active{background:linear-gradient(135deg,#5634c9,#365fd9);border-color:transparent}
 .prompt{
   white-space:pre-wrap;background:#0e1016;border:1px solid var(--line);
-  border-radius:18px;padding:16px;line-height:1.5;min-height:240px
+  border-radius:18px;padding:16px;line-height:1.55;min-height:260px
 }
 .actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
-.score{display:flex;gap:14px;align-items:center}
-.score-ring{width:82px;height:82px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--accent) 0 92%,#252936 92%);position:relative}
-.score-ring:after{content:"";position:absolute;inset:8px;border-radius:50%;background:var(--panel)}
-.score-ring strong{z-index:1;font-size:24px}
-.warning{display:flex;gap:10px;padding:12px;border-radius:14px;background:#1a1710;border:1px solid #4a3a16;margin-top:10px;color:#ffe29a}
-.slider-row{margin:16px 0}
-.slider-row .top{display:flex;justify-content:space-between;margin-bottom:6px}
-input[type="range"]{padding:0}
-.project{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.project .meta{min-width:0}.project .meta strong{display:block}.project .meta small{color:var(--muted)}
-.bottom{
-  position:fixed;left:0;right:0;bottom:0;z-index:10;
+.preview{width:100%;display:none;max-height:320px;object-fit:cover;border-radius:18px;background:#0f1118;border:1px solid var(--line);margin-top:10px}
+.lab-card{min-height:140px;text-align:left}
+.lab-card strong{display:block;margin:8px 0 5px}
+.icon{font-size:28px}
+.validation-panel{background:#0f1118;border:1px solid var(--line);border-radius:16px;padding:14px;margin:14px 0}
+.validation-heading{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.score-badge{display:grid;place-items:center;min-width:42px;height:30px;padding:0 10px;border-radius:999px;background:#1d2340;color:#cfc8ff;font-weight:800}
+.warning,.good{padding:11px 12px;border-radius:13px;margin-top:8px;line-height:1.4}
+.warning{background:#1a1710;border:1px solid #4a3a16;color:#ffe29a}
+.good{background:#0f1f17;border:1px solid #245a40;color:#c4ffdc}
+.metric{margin:15px 0}.metric-head{display:flex;justify-content:space-between;margin-bottom:7px}
+input[type=range]{padding:0}
+.project{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+.project strong{display:block}.project small{color:var(--muted)}
+.bottom-nav{
+  position:fixed;left:0;right:0;bottom:0;z-index:30;
+  display:grid;grid-template-columns:repeat(5,1fr);
   background:rgba(12,13,19,.94);backdrop-filter:blur(18px);
-  border-top:1px solid var(--line);padding:8px 8px calc(8px + env(safe-area-inset-bottom));
-  display:grid;grid-template-columns:repeat(4,1fr)
+  border-top:1px solid var(--line);padding:8px 6px calc(8px + env(safe-area-inset-bottom))
 }
-.bottom button{background:none;border:none;color:var(--muted);padding:6px 2px;font-size:12px}
-.bottom button.active{color:#a68cff}.bottom span{display:block;font-size:22px;margin-bottom:2px}
-.note{color:var(--muted);font-size:13px;line-height:1.45}
-.toast{position:fixed;left:50%;bottom:110px;transform:translateX(-50%);background:#202331;color:#fff;padding:11px 16px;border-radius:999px;opacity:0;pointer-events:none;transition:.2s;z-index:99}
+.bottom-nav button{background:none;border:none;color:var(--muted);padding:5px 1px;font-size:11px}
+.bottom-nav button.active{color:#aa93ff}
+.bottom-nav span{display:block;font-size:21px;margin-bottom:2px}
+.toast{
+  position:fixed;left:50%;bottom:105px;transform:translateX(-50%);
+  background:#202331;color:#fff;padding:11px 16px;border-radius:999px;
+  opacity:0;pointer-events:none;transition:.2s;z-index:99
+}
 .toast.show{opacity:1}
-@media(min-width:700px){.grid{grid-template-columns:repeat(4,1fr)}}
+@media(min-width:760px){.grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:700px){.row,.row3,.actions{grid-template-columns:1fr}}
+
 </style>
+  <title>LUMINA — AI Visual Intelligence Platform</title>
 </head>
 <body>
 <div class="app">
-<header>
-  <div class="brand">
-    <div class="logo"><div class="spark">✦</div><div><h1>Lumina AI</h1><small>Realistic photo prompt studio</small></div></div>
-    <button class="ghost" id="installHelp">•••</button>
-  </div>
-</header>
-
-<main>
-<section id="home" class="view active">
-  <div class="hero">
-    <h2>Create a stronger edit prompt</h2>
-    <p>Import a photo, describe the change, lock what must stay identical, and let Lumina compile the final prompt.</p>
-    <button class="primary" onclick="newProject()">＋ New Project</button>
-  </div>
-
-  <div class="section-title"><h3>Templates</h3></div>
-  <div class="grid">
-    <button class="card" onclick="useTemplate('restore')"><div class="icon">🛠️</div><h4>Restore Photo</h4><p>Repair blur, noise, damage and lost detail.</p></button>
-    <button class="card" onclick="useTemplate('portrait')"><div class="icon">👤</div><h4>Enhance Portrait</h4><p>Improve clarity while preserving identity.</p></button>
-    <button class="card" onclick="useTemplate('remove')"><div class="icon">🧹</div><h4>Remove Objects</h4><p>Clean distractions without changing the scene.</p></button>
-    <button class="card" onclick="useTemplate('background')"><div class="icon">🌄</div><h4>Change Background</h4><p>Replace the setting with coherent light and depth.</p></button>
-  </div>
-
-  <div class="section-title"><h3>Recent Projects</h3><button class="ghost" onclick="showView('projects')">See all</button></div>
-  <div id="recentProjects"></div>
-</section>
-
-<section id="studio" class="view">
-  <div class="field">
-    <label>Reference photo</label>
-    <input id="photoInput" type="file" accept="image/*">
-    <img id="photoPreview" class="preview" alt="Selected photo">
-  </div>
-
-  <div class="field">
-    <label>Subject</label>
-    <input id="subject" placeholder="Example: woman standing outdoors">
-  </div>
-
-  <div class="field">
-    <label>Goal</label>
-    <div class="segment" id="goalSegment">
-      <button data-goal="Restore" class="active">Restore</button>
-      <button data-goal="Enhance">Enhance</button>
-      <button data-goal="Edit">Edit</button>
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">✦</div>
+      <div>
+        <h1>LUMINA</h1>
+        <small>AI Visual Intelligence Platform</small>
+      </div>
     </div>
-  </div>
+    <button class="icon-button" id="installHelp" aria-label="Install help">•••</button>
+  </header>
 
-  <div class="field">
-    <label>Requested changes</label>
-    <textarea id="changes" placeholder="Describe exactly what should change..."></textarea>
-  </div>
+  <main>
+    <section id="dashboard" class="view active">
+      <div class="hero">
+        <h2>Reason first. Prompt second.</h2>
+        <p>Build a structured visual plan, validate it, then compile it for your preferred AI image model.</p>
+        <button class="primary" id="newProjectButton">＋ New Project</button>
+      </div>
 
-  <div class="field">
-    <label>Preserve exactly</label>
-    <div class="chips" id="preserveChips"></div>
-  </div>
+      <div class="section-title"><h3>Templates</h3></div>
+      <div id="templateGrid" class="grid"></div>
 
-  <div class="field">
-    <label>Lighting</label>
-    <select id="lighting">
-      <option>Preserve the original lighting</option>
-      <option>Soft north-facing window light</option>
-      <option>Natural overcast daylight</option>
-      <option>Golden-hour directional sunlight</option>
-      <option>Clean editorial studio lighting</option>
-      <option>Low-light cinematic practical illumination</option>
-    </select>
-  </div>
+      <div class="section-title">
+        <h3>Recent Projects</h3>
+        <button class="text-button" id="openProjectsButton">Open Project</button>
+      </div>
+      <div id="recentProjects"></div>
+    </section>
 
-  <div class="field">
-    <label>Camera behavior</label>
-    <select id="camera">
-      <option>Preserve the original camera perspective and focal-length appearance</option>
-      <option>Modern full-frame editorial photography</option>
-      <option>Medium-format portrait rendering</option>
-      <option>Documentary photojournalist capture</option>
-      <option>Macro optical precision</option>
-      <option>Commercial product photography</option>
-    </select>
-  </div>
+    <section id="studio" class="view">
+      <div class="card">
+        <div class="field">
+          <label for="photoInput">Reference image</label>
+          <input id="photoInput" type="file" accept="image/*">
+          <img id="photoPreview" class="preview" alt="Uploaded reference preview">
+          <p class="note">The image remains on your device. LUMINA uses it only as a local visual reference.</p>
+        </div>
 
-  <div class="slider-row"><div class="top"><label>Detail recovery</label><span id="detailValue">80</span></div><input id="detail" type="range" min="0" max="100" value="80"></div>
-  <div class="slider-row"><div class="top"><label>Noise reduction</label><span id="noiseValue">65</span></div><input id="noise" type="range" min="0" max="100" value="65"></div>
-  <div class="slider-row"><div class="top"><label>Sharpness</label><span id="sharpValue">55</span></div><input id="sharp" type="range" min="0" max="100" value="55"></div>
+        <div class="row">
+          <div class="field">
+            <label for="projectName">Project name</label>
+            <input id="projectName" placeholder="Example: Portrait restoration">
+          </div>
+          <div class="field">
+            <label for="goal">Edit goal</label>
+            <select id="goal"></select>
+          </div>
+        </div>
 
-  <button class="primary" onclick="buildPrompt()">✦ Build Prompt</button>
-</section>
+        <div class="field">
+          <label for="subject">Subject</label>
+          <input id="subject" placeholder="Describe the main subject">
+        </div>
 
-<section id="coach" class="view">
-  <div class="card">
-    <div class="score">
-      <div class="score-ring"><strong id="scoreNumber">92</strong></div>
-      <div><h3 style="margin:0">Prompt Score</h3><p class="note" id="scoreText">Strong preservation and restoration coverage.</p></div>
-    </div>
-  </div>
-  <div id="coachWarnings"></div>
-  <button class="primary" style="margin-top:16px" onclick="improvePrompt()">✦ Improve Prompt</button>
-</section>
+        <div class="row3">
+          <div class="field">
+            <label for="position">Position</label>
+            <select id="position"></select>
+          </div>
+          <div class="field">
+            <label for="action">Action</label>
+            <input id="action" placeholder="Walking, posing, driving…">
+          </div>
+          <div class="field">
+            <label for="environment">Environment</label>
+            <input id="environment" placeholder="Street, studio, forest…">
+          </div>
+        </div>
 
-<section id="output" class="view">
-  <div class="section-title"><h3>Compiled Prompt</h3></div>
-  <div id="promptOutput" class="prompt">Build a prompt in Prompt Studio first.</div>
-  <div class="actions">
-    <button class="secondary" onclick="copyPrompt()">Copy</button>
-    <button class="secondary" onclick="sharePrompt()">Share</button>
-    <button class="secondary" onclick="saveProject()">Save Project</button>
-    <button class="secondary" onclick="downloadPrompt()">Export Text</button>
-  </div>
-</section>
+        <div class="field">
+          <label for="changes">Requested changes / scene description</label>
+          <textarea id="changes" placeholder="Describe what should happen and what the final image should look like."></textarea>
+        </div>
 
-<section id="projects" class="view">
-  <div class="section-title"><h3>Saved Projects</h3></div>
-  <div id="projectList"></div>
-</section>
-</main>
+        <div class="field">
+          <label>Preserve</label>
+          <div id="preserveChips" class="chips"></div>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label for="lightingSelect">Lighting</label>
+            <select id="lightingSelect"></select>
+          </div>
+          <div class="field">
+            <label for="cameraSelect">Camera</label>
+            <select id="cameraSelect"></select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Materials</label>
+          <div id="materialChips" class="chips"></div>
+        </div>
+
+        <div class="field">
+          <label for="constraints">Constraints</label>
+          <textarea id="constraints" placeholder="Example: do not alter identity, crop, perspective, or composition"></textarea>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label for="modelProfile">Output profile</label>
+            <select id="modelProfile"></select>
+          </div>
+          <div class="field">
+            <label for="detailLevel">Prompt detail</label>
+            <select id="detailLevel">
+              <option value="concise">Concise</option>
+              <option value="balanced" selected>Balanced</option>
+              <option value="detailed">Detailed</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="section-title"><h3>Structured Plan Preview</h3></div>
+        <div id="planPreview" class="prompt"></div>
+
+        <div class="validation-panel">
+          <div class="validation-heading">
+            <strong>Validation</strong>
+            <span id="validationScore" class="score-badge">0</span>
+          </div>
+          <div id="validationMessages"></div>
+        </div>
+
+        <button class="primary" id="compileButton">Compile Prompt</button>
+      </div>
+    </section>
+
+    <section id="labs" class="view">
+      <div class="section-title"><h3>Camera Lab</h3></div>
+      <div id="cameraLab" class="grid"></div>
+
+      <div class="section-title"><h3>Lighting Lab</h3></div>
+      <div id="lightingLab" class="grid"></div>
+
+      <div class="section-title"><h3>Material Library</h3></div>
+      <div id="materialLab" class="grid"></div>
+    </section>
+
+    <section id="restoration" class="view">
+      <div class="card">
+        <h3>Restoration Studio</h3>
+        <div id="restorationControls"></div>
+        <button class="primary" id="applyRestorationButton">Apply to Structured Plan</button>
+      </div>
+    </section>
+
+    <section id="library" class="view">
+      <div class="section-title"><h3>Prompt Library</h3></div>
+      <div id="libraryGrid" class="grid"></div>
+
+      <div class="section-title"><h3>Compiled Prompt</h3></div>
+      <div id="compiledPrompt" class="prompt">Compile a prompt in Prompt Studio.</div>
+
+      <div class="actions">
+        <button class="secondary" id="copyButton">Copy</button>
+        <button class="secondary" id="shareButton">Share</button>
+        <button class="secondary" id="saveButton">Save Project</button>
+        <button class="secondary" id="exportButton">Export Text</button>
+      </div>
+    </section>
+
+    <section id="projects" class="view">
+      <div class="section-title"><h3>Saved Projects</h3></div>
+      <div id="projectList"></div>
+    </section>
+  </main>
 </div>
 
-<nav class="bottom">
-  <button data-view="home" class="active"><span>⌂</span>Home</button>
+<nav class="bottom-nav">
+  <button data-view="dashboard" class="active"><span>⌂</span>Home</button>
   <button data-view="studio"><span>✎</span>Studio</button>
-  <button data-view="coach"><span>◉</span>Coach</button>
-  <button data-view="output"><span>□</span>Output</button>
+  <button data-view="labs"><span>◫</span>Labs</button>
+  <button data-view="restoration"><span>🛠</span>Restore</button>
+  <button data-view="library"><span>▤</span>Library</button>
 </nav>
 
 <div id="toast" class="toast"></div>
 
 <script>
-const preserveOptions=["Identity","Face","Expression","Pose","Body proportions","Hair","Clothing","Composition","Crop","Camera angle","Perspective","Background","Lighting direction"];
-let state={
-  goal:"Restore",
-  preserve:new Set(["Identity","Face","Expression","Pose","Composition","Camera angle","Perspective"]),
-  prompt:"",
-  photoData:null
+window.LUMINA_CAMERAS = [
+  {id:"portrait",name:"Portrait",icon:"👤",description:"Natural facial proportions, flattering compression, realistic depth of field.",prompt:"85mm portrait perspective, natural facial proportions, flattering compression, shallow but realistic depth of field"},
+  {id:"product",name:"Product",icon:"📦",description:"Clean geometry, controlled reflections, commercial clarity.",prompt:"commercial product photography, controlled perspective, edge-to-edge clarity, clean reflections"},
+  {id:"wildlife",name:"Wildlife",icon:"🐅",description:"Long-lens documentary realism and natural behavior.",prompt:"long-lens wildlife photography, natural distance compression, documentary realism"},
+  {id:"macro",name:"Macro",icon:"🔬",description:"Close optical precision and detailed surface geometry.",prompt:"macro optical precision, close working distance, detailed surface geometry"},
+  {id:"architecture",name:"Architecture",icon:"🏛️",description:"Accurate geometry, corrected verticals, wide dynamic range.",prompt:"architectural photography, corrected verticals, accurate geometry, wide dynamic range"},
+  {id:"automotive",name:"Automotive",icon:"🚘",description:"Controlled reflections and realistic paint response.",prompt:"automotive photography, controlled reflections, realistic paint and metal response"},
+  {id:"drone",name:"Drone",icon:"🛰️",description:"Stable aerial perspective with geographic scale.",prompt:"aerial drone perspective, stable horizon, geographic scale and depth"}
+];
+</script>
+<script>
+window.LUMINA_LIGHTING = [
+  {id:"studio",name:"Studio",icon:"💡",description:"Controlled key, fill, shadows, and polished highlights.",prompt:"clean studio key light, controlled fill, coherent shadows and polished highlights"},
+  {id:"window",name:"Window",icon:"🪟",description:"Soft directional window light and natural falloff.",prompt:"soft directional window light with natural falloff and gentle bounce"},
+  {id:"golden",name:"Golden Hour",icon:"🌅",description:"Warm low-angle light and long soft shadows.",prompt:"low-angle golden-hour sunlight with warm highlights and long soft shadows"},
+  {id:"blue",name:"Blue Hour",icon:"🌆",description:"Cool ambient light balanced by warm practicals.",prompt:"cool blue-hour ambient light balanced with warm practical lights"},
+  {id:"night",name:"Night",icon:"🌙",description:"Realistic practical lighting with preserved shadow detail.",prompt:"low-light night photography with realistic practical illumination and preserved shadow detail"},
+  {id:"rain",name:"Rain",icon:"🌧️",description:"Diffuse light, wet reflections, atmospheric moisture.",prompt:"diffuse rainy-day light, wet-surface reflections and atmospheric moisture"},
+  {id:"snow",name:"Snow",icon:"❄️",description:"Bright snow bounce and controlled highlights.",prompt:"bright snow illumination with controlled highlights and cool environmental bounce"},
+  {id:"fog",name:"Fog",icon:"🌫️",description:"Soft diffusion and layered atmospheric depth.",prompt:"soft fog diffusion, reduced distant contrast and layered atmospheric depth"},
+  {id:"sunset",name:"Sunset",icon:"🌇",description:"Warm horizon color and natural sky gradients.",prompt:"sunset lighting with warm horizon color, soft rim light and natural sky gradients"}
+];
+</script>
+<script>
+window.LUMINA_MATERIALS = [
+  {id:"skin",name:"Skin",prompt:"natural skin translucency, capillary variation, pores and fine vellus hair"},
+  {id:"hair",name:"Hair",prompt:"individual hair strands, natural clumping, varied specular response"},
+  {id:"fabric",name:"Fabric",prompt:"coherent weave, folds, seams and realistic fiber response"},
+  {id:"glass",name:"Glass",prompt:"physically plausible refraction, reflections and edge highlights"},
+  {id:"metal",name:"Metal",prompt:"accurate roughness, brushed direction and controlled specular highlights"},
+  {id:"water",name:"Water",prompt:"realistic transparency, reflection, refraction and surface tension"},
+  {id:"wood",name:"Wood",prompt:"natural grain, finish, pores and wear"},
+  {id:"stone",name:"Stone",prompt:"mineral texture, fracture detail and weathering"},
+  {id:"concrete",name:"Concrete",prompt:"aggregate, pores, stains and matte roughness"},
+  {id:"leather",name:"Leather",prompt:"grain, creasing, stitching and subtle sheen"},
+  {id:"foliage",name:"Foliage",prompt:"varied leaves, natural translucency and non-repeating detail"},
+  {id:"paint",name:"Paint",prompt:"surface finish, micro-scratches, gloss and realistic color response"}
+];
+</script>
+<script>
+window.LUMINA_RESTORATION = [
+  {id:"deblur",name:"Deblur",defaultValue:65,prompt:"reduce optical or motion blur while preserving natural edge transitions"},
+  {id:"denoise",name:"Denoise",defaultValue:55,prompt:"remove luminance and chroma noise without waxy smoothing"},
+  {id:"jpeg",name:"JPEG Artifact Removal",defaultValue:60,prompt:"remove blocking, ringing and mosquito noise"},
+  {id:"texture",name:"Texture Recovery",defaultValue:75,prompt:"recover source-supported fine texture without inventing detail"},
+  {id:"color",name:"Color Recovery",defaultValue:60,prompt:"restore natural color relationships and neutral white balance"},
+  {id:"dynamic",name:"Dynamic Range Recovery",defaultValue:65,prompt:"recover highlight and shadow detail without artificial HDR"}
+];
+</script>
+<script>
+window.LUMINA_OPTIONS = {
+  goals:[
+    "Create realistic photograph",
+    "Edit uploaded photograph",
+    "Restore uploaded photograph",
+    "Enhance uploaded photograph",
+    "Remove object",
+    "Change background"
+  ],
+  positions:["Centered in frame","Left third","Right third","Foreground","Midground","Background"],
+  preserve:["Identity","Face","Expression","Pose","Body proportions","Clothing","Composition","Camera angle","Perspective","Background"],
+  modelProfiles:[
+    {id:"generic",name:"General Image Model"},
+    {id:"openai",name:"OpenAI Images"},
+    {id:"flux",name:"FLUX"},
+    {id:"sd",name:"Stable Diffusion"}
+  ]
 };
+</script>
+<script>
+window.LUMINA_TEMPLATES = {
+  portrait:{name:"Portrait",icon:"👤",goal:"Edit uploaded photograph",subject:"portrait of the person in the uploaded image",changes:"Enhance clarity, natural skin texture, hair strands, eye detail and tonal separation while keeping the exact same person.",constraints:"Do not alter identity, age, facial structure, expression, body proportions, camera angle, crop or composition."},
+  restoration:{name:"Restoration",icon:"🛠️",goal:"Restore uploaded photograph",subject:"the exact subjects and scene in the uploaded photograph",changes:"Remove blur, noise, compression damage, scratches and faded color while recovering believable detail supported by the source.",constraints:"Do not invent new facial features, objects, text, anatomy or background details."},
+  product:{name:"Product",icon:"📦",goal:"Create realistic photograph",subject:"commercial product hero image",changes:"Create clean product separation, realistic materials, controlled reflections and precise edge definition.",constraints:"Keep product proportions, branding placement and geometry accurate."},
+  fashion:{name:"Fashion",icon:"👗",goal:"Create realistic photograph",subject:"fashion editorial subject",changes:"Create refined styling, fabric detail, controlled pose and editorial lighting.",constraints:"Avoid distorted anatomy, impossible garments or synthetic skin."},
+  wildlife:{name:"Wildlife",icon:"🐅",goal:"Create realistic photograph",subject:"wild animal in its natural environment",changes:"Capture authentic behavior, natural anatomy, environmental detail and documentary realism.",constraints:"Avoid staged poses, fantasy anatomy, excessive sharpening or synthetic fur."},
+  landscape:{name:"Landscape",icon:"🏔️",goal:"Create realistic photograph",subject:"natural landscape",changes:"Emphasize atmospheric depth, natural light, terrain texture and balanced dynamic range.",constraints:"Avoid artificial HDR, oversaturation, impossible skies or repeated foliage."},
+  architecture:{name:"Architecture",icon:"🏛️",goal:"Create realistic photograph",subject:"architectural scene",changes:"Preserve accurate geometry, verticals, materials, reflections and realistic interior or exterior lighting.",constraints:"Avoid warped structures, impossible windows, repeated textures or incorrect scale."}
+};
+</script>
+<script>
+window.LuminaValidation = {
+  validate(plan){
+    const warnings=[];
+    const errors=[];
+    if(!plan.subject.trim()) errors.push("Add a subject.");
+    if(!plan.changes.trim()) warnings.push("Describe the requested change or scene.");
+    if(!plan.environment.trim()) warnings.push("Add an environment for stronger scene grounding.");
+    if(plan.goal.includes("uploaded") && !plan.hasReference) warnings.push("Upload a reference image for this goal.");
+    if(plan.goal==="Change background" && plan.preserve.includes("Background")) errors.push("Background is preserved but the goal changes it.");
+    if(plan.goal==="Remove object" && !plan.changes.toLowerCase().includes("remove")) warnings.push("Specify which object should be removed.");
+    if(plan.preserve.includes("Identity") && plan.constraints.toLowerCase().includes("replace face")) errors.push("Identity preservation conflicts with face replacement.");
+    if(plan.lighting.id==="rain" && !plan.environment.toLowerCase().match(/rain|wet|storm|street|outdoor/)) warnings.push("Rain lighting works best with a compatible environment.");
+    const score=Math.max(0,100-(errors.length*25)-(warnings.length*8));
+    return {errors,warnings,score,valid:errors.length===0};
+  }
+};
+</script>
+<script>
+window.LuminaPromptEngine = {
+  buildPlan(state){
+    const materials=state.materials.map(m=>m.prompt);
+    const restoration=state.restoration
+      .filter(r=>r.value>0)
+      .map(r=>`${r.name}: ${r.value}% — ${r.prompt}`);
+    return {
+      goal:state.goal,
+      scene:{
+        subject:state.subject,
+        position:state.position,
+        action:state.action,
+        environment:state.environment
+      },
+      preservation:state.preserve,
+      changes:state.changes,
+      lighting:state.lighting,
+      camera:state.camera,
+      materials,
+      restoration,
+      constraints:state.constraints,
+      detailLevel:state.detailLevel,
+      modelProfile:state.modelProfile,
+      hasReference:state.hasReference
+    };
+  },
+  toPlainPlan(plan){
+    return `GOAL
+${plan.goal}
 
-function init(){
-  const chips=document.getElementById("preserveChips");
-  preserveOptions.forEach(x=>{
-    const b=document.createElement("button");
-    b.className="chip"+(state.preserve.has(x)?" active":"");
-    b.textContent=x;
-    b.onclick=()=>{state.preserve.has(x)?state.preserve.delete(x):state.preserve.add(x);b.classList.toggle("active")};
-    chips.appendChild(b);
-  });
+SCENE
+Subject: ${plan.scene.subject || "Not specified"}
+Position: ${plan.scene.position}
+Action: ${plan.scene.action || "Not specified"}
+Environment: ${plan.scene.environment || "Not specified"}
 
-  document.querySelectorAll(".bottom button").forEach(b=>b.onclick=()=>showView(b.dataset.view));
-  document.querySelectorAll("#goalSegment button").forEach(b=>b.onclick=()=>{
-    state.goal=b.dataset.goal;
-    document.querySelectorAll("#goalSegment button").forEach(x=>x.classList.remove("active"));
-    b.classList.add("active");
-  });
+PRESERVATION
+${plan.preservation.length ? plan.preservation.join(", ") : "None selected"}
 
-  ["detail","noise","sharp"].forEach(id=>{
-    const el=document.getElementById(id);
-    const out=document.getElementById(id==="detail"?"detailValue":id==="noise"?"noiseValue":"sharpValue");
-    el.oninput=()=>out.textContent=el.value;
-  });
+CHANGES
+${plan.changes || "Not specified"}
 
-  document.getElementById("photoInput").addEventListener("change", e=>{
-    const file=e.target.files[0];
-    if(!file)return;
-    const reader=new FileReader();
-    reader.onload=()=>{state.photoData=reader.result;const img=document.getElementById("photoPreview");img.src=reader.result;img.style.display="block"};
-    reader.readAsDataURL(file);
-  });
+LIGHTING
+${plan.lighting.prompt}
 
-  document.getElementById("installHelp").onclick=()=>alert("Install on iPhone: tap Safari's Share button, choose Add to Home Screen, then tap Add.");
-  renderProjects();
-}
-function showView(id){
-  document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
-  document.querySelectorAll(".bottom button").forEach(b=>b.classList.toggle("active",b.dataset.view===id));
-  window.scrollTo({top:0,behavior:"smooth"});
-}
-function newProject(){
-  document.getElementById("subject").value="";
-  document.getElementById("changes").value="";
-  state.prompt="";
-  showView("studio");
-}
-function useTemplate(type){
-  const map={
-    restore:["Restore","Restore and enhance the uploaded photograph. Remove blur, noise, compression damage and surface defects while recovering believable fine detail."],
-    portrait:["Enhance","Improve portrait clarity, skin texture, hair detail, tonal separation and natural color while preserving the person exactly."],
-    remove:["Edit","Remove the specified unwanted object and reconstruct the hidden background with consistent geometry, texture, lighting and perspective."],
-    background:["Edit","Replace only the background with the requested environment while preserving the subject, edges, pose, perspective and original photographic realism."]
+CAMERA
+${plan.camera.prompt}
+
+MATERIALS
+${plan.materials.length ? plan.materials.join("; ") : "Visible materials should remain physically plausible."}
+
+RESTORATION / QUALITY
+${plan.restoration.length ? plan.restoration.join("\n") : "Natural detail, balanced dynamic range and authentic imperfections."}
+
+CONSTRAINTS
+${plan.constraints || "Avoid distorted anatomy, inconsistent lighting, synthetic textures and impossible perspective."}`;
+  }
+};
+</script>
+<script>
+window.LuminaFormatters = {
+  format(plan){
+    const base=window.LuminaPromptEngine.toPlainPlan(plan);
+    const profile=plan.modelProfile;
+    const detail=plan.detailLevel;
+
+    if(profile==="openai"){
+      return `Use the uploaded image as the visual reference when provided.
+
+${base}
+
+FINAL INSTRUCTION
+Apply only the requested changes. Keep preserved elements faithful to the reference. Produce a realistic, coherent photograph with natural lighting, materials, perspective and texture.`;
+    }
+
+    if(profile==="flux"){
+      const compact=detail==="concise";
+      return compact
+        ? `${plan.scene.subject}, ${plan.scene.action}, ${plan.scene.environment}, ${plan.camera.prompt}, ${plan.lighting.prompt}, realistic materials, preserve ${plan.preservation.join(", ")}, ${plan.changes}, avoid ${plan.constraints}`
+        : `${base}
+
+OUTPUT STYLE
+Photorealistic FLUX prompt with explicit subject, scene, camera, lighting, materials, preservation and constraints.`;
+    }
+
+    if(profile==="sd"){
+      return `POSITIVE PROMPT
+${base}
+
+NEGATIVE PROMPT
+distorted anatomy, altered identity, duplicate features, synthetic texture, oversharpening, halos, impossible reflections, warped perspective`;
+    }
+
+    return `${base}
+
+COMPILED PROMPT
+Create a realistic, high-fidelity photograph or photo edit that follows the structured plan above. Preserve all locked elements, keep the scene internally consistent, and avoid unsupported changes.`;
+  }
+};
+</script>
+<script>
+window.LuminaStorage = {
+  key:"lumina-modular-mvp-projects",
+  list(){
+    try{return JSON.parse(localStorage.getItem(this.key)||"[]")}catch{return []}
+  },
+  save(project){
+    const projects=this.list();
+    projects.unshift(project);
+    localStorage.setItem(this.key,JSON.stringify(projects.slice(0,50)));
+  },
+  delete(id){
+    localStorage.setItem(this.key,JSON.stringify(this.list().filter(x=>x.id!==id)));
+  },
+  get(id){return this.list().find(x=>x.id===id)}
+};
+</script>
+<script>
+window.LuminaUI = {
+  showView(id){
+    document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));
+    document.getElementById(id).classList.add("active");
+    document.querySelectorAll(".bottom-nav button").forEach(b=>b.classList.toggle("active",b.dataset.view===id));
+    window.scrollTo({top:0,behavior:"smooth"});
+  },
+  toast(message){
+    const t=document.getElementById("toast");
+    t.textContent=message;t.classList.add("show");
+    setTimeout(()=>t.classList.remove("show"),1800);
+  },
+  escape(value){
+    return String(value).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
+  }
+};
+</script>
+<script>
+(() => {
+  const state={
+    photoData:null,
+    camera:LUMINA_CAMERAS[0],
+    lighting:LUMINA_LIGHTING[0],
+    materials:new Set(["skin","hair","fabric"]),
+    preserve:new Set(LUMINA_OPTIONS.preserve),
+    restoration:LUMINA_RESTORATION.map(x=>({...x,value:x.defaultValue})),
+    compiledPrompt:""
   };
-  const [goal,text]=map[type];
-  state.goal=goal; document.getElementById("changes").value=text;
-  document.querySelectorAll("#goalSegment button").forEach(b=>b.classList.toggle("active",b.dataset.goal===goal));
-  showView("studio");
-}
-function buildPrompt(){
-  const subject=document.getElementById("subject").value.trim()||"the principal subject in the uploaded image";
-  const changes=document.getElementById("changes").value.trim()||"Improve photographic clarity, tonal separation and realistic fine detail without changing the content.";
-  const lighting=document.getElementById("lighting").value;
-  const camera=document.getElementById("camera").value;
-  const detail=document.getElementById("detail").value;
-  const noise=document.getElementById("noise").value;
-  const sharp=document.getElementById("sharp").value;
-  const preserve=[...state.preserve].join(", ");
 
-  state.prompt=`Use the uploaded image as the absolute visual source and editing anchor.
+  const $=id=>document.getElementById(id);
 
-PRIMARY OBJECTIVE
-${state.goal} ${subject}. Perform only the requested changes: ${changes}
+  function init(){
+    renderTemplates();
+    renderLabs();
+    renderMaterials();
+    renderPreserve();
+    renderRestoration();
+    populateSelects();
+    bindNavigation();
+    bindInputs();
+    renderProjects();
+    updatePlan();
+    if("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js");
+  }
 
-ABSOLUTE PRESERVATION LOCK
-Preserve exactly: ${preserve}. Maintain the original spatial relationships, subject placement, scene geometry, edge boundaries and photographic continuity. Do not reinterpret, replace, beautify or redesign preserved elements.
+  function populateSelects(){
+    LUMINA_OPTIONS.goals.forEach(x=>$("goal").add(new Option(x,x)));
+    LUMINA_OPTIONS.positions.forEach(x=>$("position").add(new Option(x,x)));
+    LUMINA_CAMERAS.forEach((x,i)=>$("cameraSelect").add(new Option(x.name,String(i))));
+    LUMINA_LIGHTING.forEach((x,i)=>$("lightingSelect").add(new Option(x.name,String(i))));
+    LUMINA_OPTIONS.modelProfiles.forEach(x=>$("modelProfile").add(new Option(x.name,x.id)));
+  }
 
-PHOTOGRAPHIC ANALYSIS AND CONTINUITY
-Respect the existing focal-length appearance, subject distance, depth relationships, occlusion, contact shadows, reflections, highlight direction and environmental light bounce. ${camera}. ${lighting}.
+  function renderTemplates(){
+    const box=$("templateGrid");
+    Object.entries(LUMINA_TEMPLATES).forEach(([id,t])=>{
+      const b=document.createElement("button");
+      b.className="card lab-card";
+      b.innerHTML=`<div class="icon">${t.icon}</div><strong>${t.name}</strong><div class="note">${t.changes}</div>`;
+      b.onclick=()=>loadTemplate(id);
+      box.appendChild(b);
+    });
+    const lib=$("libraryGrid");
+    Object.entries(LUMINA_TEMPLATES).forEach(([id,t])=>{
+      const b=document.createElement("button");
+      b.className="card lab-card";
+      b.innerHTML=`<div class="icon">${t.icon}</div><strong>${t.name}</strong><div class="note">Load structured ${t.name.toLowerCase()} workflow.</div>`;
+      b.onclick=()=>loadTemplate(id);
+      lib.appendChild(b);
+    });
+  }
 
-REALITY-GRADE DETAIL RECOVERY
-Apply detail recovery at ${detail}% intensity, noise reduction at ${noise}% intensity and natural sharpness at ${sharp}% intensity. Recover fine edge definition, realistic hair strands, eyelashes, eyebrows, skin pores, fabric weave, stitching, foliage, architecture and material microtexture only where supported by the source. Preserve authentic asymmetry and natural imperfections. Do not invent unsupported facial features, anatomy, accessories, text or background objects.
+  function renderLabs(){
+    LUMINA_CAMERAS.forEach((x,i)=>{
+      const b=document.createElement("button");
+      b.className="card lab-card";
+      b.innerHTML=`<div class="icon">${x.icon}</div><strong>${x.name}</strong><div class="note">${x.description}</div>`;
+      b.onclick=()=>{state.camera=x;$("cameraSelect").value=String(i);updatePlan();LuminaUI.toast(`${x.name} camera selected`)};
+      $("cameraLab").appendChild(b);
+    });
+    LUMINA_LIGHTING.forEach((x,i)=>{
+      const b=document.createElement("button");
+      b.className="card lab-card";
+      b.innerHTML=`<div class="icon">${x.icon}</div><strong>${x.name}</strong><div class="note">${x.description}</div>`;
+      b.onclick=()=>{state.lighting=x;$("lightingSelect").value=String(i);updatePlan();LuminaUI.toast(`${x.name} lighting selected`)};
+      $("lightingLab").appendChild(b);
+    });
+    LUMINA_MATERIALS.forEach(x=>{
+      const b=document.createElement("button");
+      b.className="card lab-card";
+      b.innerHTML=`<strong>${x.name}</strong><div class="note">${x.prompt}</div>`;
+      b.onclick=()=>{state.materials.add(x.id);syncMaterialChips();updatePlan();LuminaUI.toast(`${x.name} added`)};
+      $("materialLab").appendChild(b);
+    });
+  }
 
-MATERIAL AND LIGHT BEHAVIOR
-Skin must retain natural translucency, capillary variation, fine vellus hair and non-plastic texture. Hair must resolve into varied strands without painted clumps. Fabric must show coherent weave, folds and stitching. Glass, metal, water, wood, foliage, stone and painted surfaces must retain physically plausible reflectance, roughness, refraction and weathering. Keep all reflections, shadows and highlights consistent with the same scene illumination.
+  function renderPreserve(){
+    LUMINA_OPTIONS.preserve.forEach(x=>{
+      const b=document.createElement("button");
+      b.className="chip active";b.textContent=x;b.dataset.value=x;
+      b.onclick=()=>{state.preserve.has(x)?state.preserve.delete(x):state.preserve.add(x);b.classList.toggle("active");updatePlan()};
+      $("preserveChips").appendChild(b);
+    });
+  }
 
-TONAL AND COLOR RESTORATION
-Improve local contrast, dynamic range and tonal separation without artificial HDR. Recover gradual highlight falloff and readable shadow detail without flattening the image. Preserve realistic white balance, neutral color relationships and natural skin tones. Avoid oversaturation, crushed blacks, clipped highlights and color contamination.
+  function renderMaterials(){
+    LUMINA_MATERIALS.forEach(x=>{
+      const b=document.createElement("button");
+      b.className="chip"+(state.materials.has(x.id)?" active":"");
+      b.textContent=x.name;b.dataset.value=x.id;
+      b.onclick=()=>{state.materials.has(x.id)?state.materials.delete(x.id):state.materials.add(x.id);b.classList.toggle("active");updatePlan()};
+      $("materialChips").appendChild(b);
+    });
+  }
 
-ARTIFACT CONTROL
-Remove blur, compression blocks, JPEG ringing, chroma noise, banding, pixelation and unwanted haze while retaining genuine photographic grain. Sharpen naturally without halos, edge ringing, brittle texture or synthetic micro-detail.
+  function syncMaterialChips(){
+    document.querySelectorAll("#materialChips .chip").forEach(b=>b.classList.toggle("active",state.materials.has(b.dataset.value)));
+  }
 
-FINAL OUTPUT STANDARD
-The result must look like an authentic high-resolution photograph captured in one coherent exposure—not an illustration, CGI render, composite or AI-generated reinterpretation. Preserve identity and composition with maximum fidelity while making the requested edit visually seamless and physically believable.`;
+  function renderRestoration(){
+    state.restoration.forEach(item=>{
+      const wrap=document.createElement("div");
+      wrap.className="metric";
+      wrap.innerHTML=`<div class="metric-head"><label>${item.name}</label><span id="${item.id}Value">${item.value}</span></div><input id="${item.id}" type="range" min="0" max="100" value="${item.value}">`;
+      $("restorationControls").appendChild(wrap);
+      wrap.querySelector("input").oninput=e=>{item.value=Number(e.target.value);$(`${item.id}Value`).textContent=item.value};
+    });
+  }
 
-  document.getElementById("promptOutput").textContent=state.prompt;
-  updateCoach();
-  showView("output");
-}
-function updateCoach(){
-  const warnings=[];
-  const subject=document.getElementById("subject").value.trim();
-  const changes=document.getElementById("changes").value.trim();
-  if(!subject)warnings.push("Add a specific subject for a more targeted prompt.");
-  if(!changes)warnings.push("Describe exactly what should change.");
-  if(state.goal==="Edit" && state.preserve.has("Background") && /background/i.test(changes))warnings.push("Background is locked but the requested edit mentions changing it.");
-  if(!state.preserve.has("Identity"))warnings.push("Identity lock is off; enable it for edits involving a real person.");
-  const score=Math.max(60,100-warnings.length*9);
-  document.getElementById("scoreNumber").textContent=score;
-  document.getElementById("scoreText").textContent=warnings.length?"Review the suggestions below before exporting.":"Excellent structure, preservation and photographic consistency.";
-  const box=document.getElementById("coachWarnings");
-  box.innerHTML=warnings.length?warnings.map(w=>`<div class="warning">⚠️ <span>${w}</span></div>`).join(""):`<div class="card" style="margin-top:12px"><strong style="color:var(--good)">✓ No major conflicts detected</strong><p class="note">The prompt clearly separates requested changes from preserved content.</p></div>`;
-}
-function improvePrompt(){
-  if(!document.getElementById("changes").value.trim())document.getElementById("changes").value="Improve clarity, recover realistic fine detail, correct tonal balance and remove visible image artifacts while preserving the original scene.";
-  state.preserve.add("Identity");state.preserve.add("Composition");state.preserve.add("Perspective");
-  document.querySelectorAll(".chip").forEach(b=>b.classList.toggle("active",state.preserve.has(b.textContent)));
-  buildPrompt();
-}
-async function copyPrompt(){
-  if(!state.prompt)return toast("Build a prompt first");
-  await navigator.clipboard.writeText(state.prompt);toast("Prompt copied");
-}
-async function sharePrompt(){
-  if(!state.prompt)return toast("Build a prompt first");
-  if(navigator.share)await navigator.share({title:"Lumina AI Prompt",text:state.prompt});
-  else copyPrompt();
-}
-function saveProject(){
-  if(!state.prompt)return toast("Build a prompt first");
-  const projects=JSON.parse(localStorage.getItem("lumina-projects")||"[]");
-  projects.unshift({
-    id:Date.now(),
-    name:document.getElementById("subject").value.trim()||`${state.goal} Project`,
-    goal:state.goal,prompt:state.prompt,date:new Date().toLocaleString()
-  });
-  localStorage.setItem("lumina-projects",JSON.stringify(projects.slice(0,50)));
-  renderProjects();toast("Project saved");
-}
-function renderProjects(){
-  const projects=JSON.parse(localStorage.getItem("lumina-projects")||"[]");
-  const html=projects.length?projects.map(p=>`<div class="card project" style="margin-bottom:10px"><div class="meta"><strong>${escapeHtml(p.name)}</strong><small>${escapeHtml(p.goal)} • ${escapeHtml(p.date)}</small></div><div><button class="secondary" onclick="openProject(${p.id})">Open</button> <button class="ghost" onclick="deleteProject(${p.id})">Delete</button></div></div>`).join(""):`<div class="card"><p class="note">No saved projects yet.</p></div>`;
-  document.getElementById("projectList").innerHTML=html;
-  document.getElementById("recentProjects").innerHTML=projects.slice(0,3).length?projects.slice(0,3).map(p=>`<button class="card" style="width:100%;text-align:left;margin-bottom:10px" onclick="openProject(${p.id})"><strong>${escapeHtml(p.name)}</strong><p>${escapeHtml(p.goal)} • ${escapeHtml(p.date)}</p></button>`).join(""):`<div class="card"><p class="note">Your saved work will appear here.</p></div>`;
-}
-function openProject(id){
-  const p=JSON.parse(localStorage.getItem("lumina-projects")||"[]").find(x=>x.id===id);
-  if(!p)return;state.prompt=p.prompt;document.getElementById("promptOutput").textContent=p.prompt;showView("output");
-}
-function deleteProject(id){
-  const projects=JSON.parse(localStorage.getItem("lumina-projects")||"[]").filter(x=>x.id!==id);
-  localStorage.setItem("lumina-projects",JSON.stringify(projects));renderProjects();toast("Project deleted");
-}
-function downloadPrompt(){
-  if(!state.prompt)return toast("Build a prompt first");
-  const blob=new Blob([state.prompt],{type:"text/plain"});
-  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="Lumina-Prompt.txt";a.click();URL.revokeObjectURL(a.href);
-}
-function toast(msg){
-  const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),1800)
-}
-function escapeHtml(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
-if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js");
-init();
+  function bindNavigation(){
+    document.querySelectorAll(".bottom-nav button").forEach(b=>b.onclick=()=>LuminaUI.showView(b.dataset.view));
+    $("newProjectButton").onclick=newProject;
+    $("openProjectsButton").onclick=()=>LuminaUI.showView("projects");
+    $("compileButton").onclick=compilePrompt;
+    $("applyRestorationButton").onclick=applyRestoration;
+    $("copyButton").onclick=copyPrompt;
+    $("shareButton").onclick=sharePrompt;
+    $("saveButton").onclick=saveProject;
+    $("exportButton").onclick=exportPrompt;
+    $("installHelp").onclick=()=>alert("On iPhone: open this site in Safari, tap Share, then Add to Home Screen.");
+  }
+
+  function bindInputs(){
+    ["projectName","goal","subject","position","action","environment","changes","constraints","modelProfile","detailLevel"].forEach(id=>$(id).addEventListener("input",updatePlan));
+    $("cameraSelect").onchange=()=>{state.camera=LUMINA_CAMERAS[Number($("cameraSelect").value)];updatePlan()};
+    $("lightingSelect").onchange=()=>{state.lighting=LUMINA_LIGHTING[Number($("lightingSelect").value)];updatePlan()};
+    $("photoInput").addEventListener("change",e=>{
+      const f=e.target.files[0];if(!f)return;
+      const reader=new FileReader();
+      reader.onload=()=>{state.photoData=reader.result;$("photoPreview").src=reader.result;$("photoPreview").style.display="block";updatePlan();LuminaUI.toast("Reference image loaded")};
+      reader.readAsDataURL(f);
+    });
+  }
+
+  function getState(){
+    return {
+      goal:$("goal").value,
+      subject:$("subject").value.trim(),
+      position:$("position").value,
+      action:$("action").value.trim(),
+      environment:$("environment").value.trim(),
+      changes:$("changes").value.trim(),
+      constraints:$("constraints").value.trim(),
+      preserve:[...state.preserve],
+      camera:state.camera,
+      lighting:state.lighting,
+      materials:LUMINA_MATERIALS.filter(m=>state.materials.has(m.id)),
+      restoration:state.restoration,
+      modelProfile:$("modelProfile").value,
+      detailLevel:$("detailLevel").value,
+      hasReference:Boolean(state.photoData)
+    };
+  }
+
+  function updatePlan(){
+    const raw=getState();
+    const plan=LuminaPromptEngine.buildPlan(raw);
+    $("planPreview").textContent=LuminaPromptEngine.toPlainPlan(plan);
+    const validation=LuminaValidation.validate({
+      goal:raw.goal,
+      subject:raw.subject,
+      changes:raw.changes,
+      environment:raw.environment,
+      preserve:raw.preserve,
+      constraints:raw.constraints,
+      lighting:raw.lighting,
+      hasReference:raw.hasReference
+    });
+    renderValidation(validation);
+  }
+
+  function renderValidation(v){
+    $("validationScore").textContent=v.score;
+    const parts=[];
+    v.errors.forEach(x=>parts.push(`<div class="warning">⛔ ${LuminaUI.escape(x)}</div>`));
+    v.warnings.forEach(x=>parts.push(`<div class="warning">⚠️ ${LuminaUI.escape(x)}</div>`));
+    if(!parts.length) parts.push('<div class="good">✓ No conflicts detected.</div>');
+    $("validationMessages").innerHTML=parts.join("");
+  }
+
+  function compilePrompt(){
+    const raw=getState();
+    const validation=LuminaValidation.validate({
+      goal:raw.goal,subject:raw.subject,changes:raw.changes,environment:raw.environment,
+      preserve:raw.preserve,constraints:raw.constraints,lighting:raw.lighting,hasReference:raw.hasReference
+    });
+    if(!validation.valid){LuminaUI.toast("Fix validation errors first");return}
+    const plan=LuminaPromptEngine.buildPlan(raw);
+    state.compiledPrompt=LuminaFormatters.format(plan);
+    $("compiledPrompt").textContent=state.compiledPrompt;
+    LuminaUI.showView("library");
+    LuminaUI.toast("Prompt compiled");
+  }
+
+  function applyRestoration(){
+    const text=state.restoration.filter(x=>x.value>0).map(x=>`${x.name}: ${x.value}% — ${x.prompt}`).join("\\n");
+    $("changes").value=[$("changes").value.trim(),`RESTORATION SETTINGS\\n${text}`].filter(Boolean).join("\\n\\n");
+    updatePlan();LuminaUI.showView("studio");LuminaUI.toast("Restoration settings applied");
+  }
+
+  function loadTemplate(id){
+    const t=LUMINA_TEMPLATES[id];
+    $("goal").value=t.goal;$("subject").value=t.subject;$("changes").value=t.changes;$("constraints").value=t.constraints;
+    updatePlan();LuminaUI.showView("studio");LuminaUI.toast(`${t.name} template loaded`);
+  }
+
+  function newProject(){
+    ["projectName","subject","action","environment","changes","constraints"].forEach(id=>$(id).value="");
+    $("goal").selectedIndex=0;$("position").selectedIndex=0;
+    state.compiledPrompt="";$("compiledPrompt").textContent="Compile a prompt in Prompt Studio.";
+    updatePlan();LuminaUI.showView("studio");
+  }
+
+  function saveProject(){
+    if(!state.compiledPrompt) compilePrompt();
+    if(!state.compiledPrompt) return;
+    LuminaStorage.save({
+      id:Date.now(),
+      name:$("projectName").value.trim()||"Untitled Project",
+      prompt:state.compiledPrompt,
+      date:new Date().toLocaleString()
+    });
+    renderProjects();LuminaUI.toast("Project saved");
+  }
+
+  function renderProjects(){
+    const projects=LuminaStorage.list();
+    $("recentProjects").innerHTML=projects.slice(0,3).length
+      ? projects.slice(0,3).map(p=>`<button class="card" style="width:100%;text-align:left;margin-bottom:10px" onclick="LuminaApp.openProject(${p.id})"><strong>${LuminaUI.escape(p.name)}</strong><div class="note">${LuminaUI.escape(p.date)}</div></button>`).join("")
+      : '<div class="card"><div class="note">No recent projects yet.</div></div>';
+    $("projectList").innerHTML=projects.length
+      ? projects.map(p=>`<div class="card project"><div><strong>${LuminaUI.escape(p.name)}</strong><small>${LuminaUI.escape(p.date)}</small></div><div><button class="secondary" onclick="LuminaApp.openProject(${p.id})">Open</button> <button class="danger" onclick="LuminaApp.deleteProject(${p.id})">Delete</button></div></div>`).join("")
+      : '<div class="card"><div class="note">No saved projects yet.</div></div>';
+  }
+
+  function openProject(id){
+    const p=LuminaStorage.get(id);if(!p)return;
+    state.compiledPrompt=p.prompt;$("compiledPrompt").textContent=p.prompt;LuminaUI.showView("library");
+  }
+
+  function deleteProject(id){
+    LuminaStorage.delete(id);renderProjects();LuminaUI.toast("Project deleted");
+  }
+
+  async function copyPrompt(){
+    if(!state.compiledPrompt) return LuminaUI.toast("Compile a prompt first");
+    await navigator.clipboard.writeText(state.compiledPrompt);LuminaUI.toast("Prompt copied");
+  }
+
+  async function sharePrompt(){
+    if(!state.compiledPrompt) return LuminaUI.toast("Compile a prompt first");
+    if(navigator.share) await navigator.share({title:"LUMINA Prompt",text:state.compiledPrompt});
+    else copyPrompt();
+  }
+
+  function exportPrompt(){
+    if(!state.compiledPrompt) return LuminaUI.toast("Compile a prompt first");
+    const blob=new Blob([state.compiledPrompt],{type:"text/plain"});
+    const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="LUMINA-Prompt.txt";a.click();URL.revokeObjectURL(a.href);
+  }
+
+  window.LuminaApp={openProject,deleteProject};
+  init();
+})();
 </script>
 </body>
 </html>
