@@ -1,0 +1,17 @@
+{
+  "name": "Lumina AI",
+  "short_name": "Lumina",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#090a0f",
+  "theme_color": "#090a0f",
+  "description": "An iPhone-first realistic photo editing prompt studio.",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
